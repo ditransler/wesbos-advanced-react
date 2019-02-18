@@ -8,11 +8,14 @@ const server = createServer();
 // TODO: Use express middleware to handle cookies (JWT)
 // TODO: Use express middleware to populate current user
 
-server.start({
-    cors: {
-        credentials: true,
-        origin: process.env.FRONTEND_URL
+server.start(
+    {
+        cors: {
+            credentials: true,
+            origin: process.env.FRONTEND_URL
+        }
+    },
+    deets => {
+        console.log(`The server is now running on http://localhost:${deets.port}`)
     }
-}, deets => {
-    console.log(`The server is now running on the http://localhost:${deets.port}`)
-});
+);
