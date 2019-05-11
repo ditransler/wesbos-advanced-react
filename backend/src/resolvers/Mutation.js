@@ -50,7 +50,7 @@ const Mutations = {
         // hash their password
         const password = await bcrypt.hash(args.password, 10);
         // create the user in the database
-        const user = ctx.db.mutation.createUser({
+        const user = await ctx.db.mutation.createUser({
             data: {
                 ...args,
                 password,
@@ -69,12 +69,12 @@ const Mutations = {
     },
     async signin(parent, { email, password }, ctx, info) {
         // check if there is a user with this email
-        const user = ctx.db.query.user({ where: { email }});
+        const user = await ctx.db.query.user({ where: { email }});
         if (!user) {
             throw new Error(`No such user with the ${email} address`);
         }
         // check if password is correct
-        const isPasswordValid = bcrypt.compare(password, user.password);
+        const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             throw new Error('Invalid password');
         }
